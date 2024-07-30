@@ -19,7 +19,7 @@ console.log(process.env.db_user)
 console.log(process.env.db_pw)
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri ='mongodb://localhost:27017'
 // const uri = `mongodb+srv://${process.env.db_user}:${process.env.db_pw}@cluster0.hfhifix.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 console.log(uri)
@@ -40,6 +40,8 @@ async function run() {
 
     const coffeeCollection = client.db("coffeeDB").collection("coffees");
     // const haiku = database.collection<Haiku>("haiku");
+    
+    //CREATE
     app.post('/coffee',async(req,res)=>{
       const newCoffee = req.body
       console.log(newCoffee)
@@ -47,11 +49,33 @@ async function run() {
       res.send(result)
     })
 
+    //READ
     app.get('/coffee',async(req,res)=>{
       const allCoffee = await coffeeCollection.find().toArray()
       console.log(allCoffee)
       res.send(allCoffee)
     })
+
+    //DELETE
+    app.delete('/coffee/:id',async(req,res)=>{
+      const id = req.params.id
+    //   const query = { title: "Annie Hall" };
+    // const result = await movies.deleteOne(query);
+    const query = {_id : new ObjectId(id)}
+      const deleteCoffee = await coffeeCollection.deleteOne(query)
+      console.log('delete',deleteCoffee)
+      res.send(deleteCoffee)
+    })
+
+    //forUPDATE
+    app.get('/coffee/:id',async(req,res)=>{
+      const id = req.params.id
+      const query = {_id : new ObjectId(id)}
+      const result = await coffeeCollection.findOne(query)
+      console.log("update coffee-->",result)
+      res.send(result)
+    })
+
 
 
     // Send a ping to confirm a successful connection
