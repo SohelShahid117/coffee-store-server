@@ -61,7 +61,7 @@ async function run() {
       const id = req.params.id
     //   const query = { title: "Annie Hall" };
     // const result = await movies.deleteOne(query);
-    const query = {_id : new ObjectId(id)}
+      const query = {_id : new ObjectId(id)}
       const deleteCoffee = await coffeeCollection.deleteOne(query)
       console.log('delete',deleteCoffee)
       res.send(deleteCoffee)
