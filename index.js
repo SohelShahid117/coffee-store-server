@@ -39,8 +39,11 @@ async function run() {
     await client.connect();
 
     const coffeeCollection = client.db("coffeeDB").collection("coffees");
+    const userCollection = client.db("userDB").collection("user");
     // const haiku = database.collection<Haiku>("haiku");
     
+    
+    //coffee related API 
     //CREATE
     app.post('/coffee',async(req,res)=>{
       const newCoffee = req.body
@@ -99,6 +102,22 @@ async function run() {
 
     })
 
+
+    //user related API
+      //CREATE
+      app.post('/user',async(req,res)=>{
+        const newUser = req.body
+        console.log(newUser)
+        const result = await userCollection.insertOne(newUser)
+        res.send(result)
+      })
+
+       //READ
+    app.get('/user',async(req,res)=>{
+      const allUser = await userCollection.find().toArray()
+      console.log(allUser)
+      res.send(allUser)
+    })
 
 
     // Send a ping to confirm a successful connection
