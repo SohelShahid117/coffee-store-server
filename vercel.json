@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "env": {
+      "API_KEY": "your-api-key",
+      "ANOTHER_VARIABLE": "value"
+    },
+    "builds": [
+      {
+        "src": "./index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/",
+        "methods":["GET","POST","PUT","PATCH","DELETE","OPTIONS"]
+      }
+    ]
+  }
+  

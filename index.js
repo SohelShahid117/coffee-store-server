@@ -119,6 +119,34 @@ async function run() {
       res.send(allUser)
     })
 
+     //DELETE
+     app.delete('/user/:id',async(req,res)=>{
+      const id = req.params.id
+    //   const query = { title: "Annie Hall" };
+    // const result = await movies.deleteOne(query);
+      const query = {_id : new ObjectId(id)}
+      const deleteUser = await userCollection.deleteOne(query)
+      console.log('delete',deleteUser)
+      res.send(deleteUser)
+    })
+
+    //UPDATE
+    app.patch('/user/:id',async(req,res)=>{
+      const user = req.body
+      // const filter ={email:user.email}
+      const result = await userCollection.updateOne(
+        { email: user.email },
+        {
+          $set: {
+            lastSignInTime : user.lastSignInTime
+          },
+        },
+        { upsert: true }
+      );
+      console.log(result)
+      res.send(result)
+    })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
